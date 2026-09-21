@@ -1,0 +1,24 @@
+pipeline {
+  agent any
+  stages {
+    stage('Checkout') {
+      steps {
+        git branch: 'main', url: 'https://github.com/bala-cloud-7/healthcare-app.git'
+      }
+    }
+    stage('Build Docker Image') {
+      steps {
+        script {
+          docker.build("healthcare-app:latest")
+        }
+      }
+    }
+    stage('Run Container') {
+      steps {
+        script {
+          sh 'docker run -d -p 8080:80 healthcare-app:latest'
+        }
+      }
+    }
+  }
+}
